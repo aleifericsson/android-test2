@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Second</string>
+    <string name="string1">Insert cash or select payment type.</string>
+    <string name="string2">Don\'t forget to tap your lidl plus card.</string>
+    <string name="string3">More reasons to shop at morissons.</string>
+    <string name="string4">Here we are. Two $1.50 hotdogs. Just $1.50? How can they possibly make profit off of that? It\'s the same price as back then. I remember when Himmel the Hero bought a hotdog here for the same price. Back then, Himmel…</string>
+    <string name="string5">The Chicken Rice Shop. Chicken Rice and More. Call 1–800–888–333.</string>
+    <string name="string6">Carbon neutral coffee comes in a black cup.</string>
 </resources>
