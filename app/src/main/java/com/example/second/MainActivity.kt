@@ -21,6 +21,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Card
@@ -41,10 +43,15 @@ import com.example.second.model.CardData
 import com.example.second.ui.theme.SecondTheme
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,10 +72,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
-    CardList(
-        cardList = Datasource().loadCards()
-    )
-    CookieClicker()
+    Column(){
+        CookieClicker()
+        CardList(
+            cardList = Datasource().loadCards()
+        )
+    }
 }
 
 @Composable
@@ -92,12 +101,13 @@ fun MyCard(cardData: CardData, modifier: Modifier = Modifier){
     )
     Card(modifier = modifier){
         Column(
-            modifier = Modifier.animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessMedium
+            modifier = Modifier
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
                 )
-            )
                 .background(color = color)
         ){
             Image(
@@ -129,17 +139,47 @@ fun MyCard(cardData: CardData, modifier: Modifier = Modifier){
 }
 
 @Composable
-private fun CookieClicker(
-    modifier: Modifier = Modifier
+fun CookieClicker(
 ){
-
+    var cookies by remember {mutableIntStateOf(0)}
+    Column(modifier = Modifier.padding(10.dp)){
+        Cookie(
+            onClick = {
+                cookies++
+            },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        CookieCount(
+            cookies = cookies,
+        )
+    }
 }
 
 @Composable
-private fun Cookie(
-
+fun CookieCount(
+    cookies: Int,
 ){
+    Row(){
+        Text(text = stringResource(id = R.string.cookies), fontSize = 50.sp)
+        Spacer(modifier = Modifier.weight(1f))
+        Text(text = cookies.toString(), fontWeight = FontWeight.Bold, fontSize = 50.sp)
+    }
+}
 
+@Composable
+fun Cookie(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+){
+    Button(onClick = onClick, modifier = modifier) {
+        Image(
+            painter = painterResource(id = R.drawable.cookie),
+            contentDescription = "cookie",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .height(200.dp)
+        )
+    }
 }
 
 @Composable
