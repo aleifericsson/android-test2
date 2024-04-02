@@ -3,6 +3,7 @@ package com.example.second
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -49,13 +50,16 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+private const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate Called")
         setContent {
             SecondTheme {
                 // A surface container using the 'background' color from the theme
@@ -67,6 +71,36 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart Called")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart Called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause Called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop Called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy Called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume Called")
     }
 }
 
@@ -94,7 +128,7 @@ fun CardList(cardList: List<CardData>, modifier:Modifier = Modifier){
 
 @Composable
 fun MyCard(cardData: CardData, modifier: Modifier = Modifier){
-    var expanded by remember {mutableStateOf(false)}
+    var expanded by rememberSaveable {mutableStateOf(false)}
     val color by animateColorAsState(
         targetValue = if(expanded) MaterialTheme.colorScheme.tertiaryContainer
         else MaterialTheme.colorScheme.primaryContainer,
