@@ -54,6 +54,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.second.ui.CardList
+import com.example.second.ui.CookieClicker
 
 private const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
@@ -110,139 +112,6 @@ fun MyApp() {
         CookieClicker()
         CardList(
             cardList = Datasource().loadCards()
-        )
-    }
-}
-
-@Composable
-fun CardList(cardList: List<CardData>, modifier:Modifier = Modifier){
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = modifier
-    ) {
-        items(cardList){
-            card -> MyCard(cardData = card, modifier = Modifier.padding(8.dp))
-        }
-    }
-}
-
-@Composable
-fun MyCard(cardData: CardData, modifier: Modifier = Modifier){
-    var expanded by rememberSaveable {mutableStateOf(false)}
-    val color by animateColorAsState(
-        targetValue = if(expanded) MaterialTheme.colorScheme.tertiaryContainer
-        else MaterialTheme.colorScheme.primaryContainer,
-    )
-    Card(modifier = modifier){
-        Column(
-            modifier = Modifier
-                .animateContentSize(
-                    animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMedium
-                    )
-                )
-                .background(color = color)
-        ){
-            Image(
-                painter = painterResource(id = cardData.imageResourceId),
-                contentDescription = stringResource(id = cardData.stringResourceId),
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(194.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-            )
-            {
-                Spacer(modifier = Modifier.weight(1f))
-                MyItemButton(
-                    expanded = expanded,
-                    onClick = {
-                        expanded = !expanded
-                    })
-            }
-            if (expanded){
-                MyText(str = LocalContext.current.getString(cardData.stringResourceId))
-            }
-        }
-    }
-}
-
-@Composable
-fun CookieClicker(
-){
-    var cookies by remember {mutableIntStateOf(0)}
-    Column(modifier = Modifier.padding(10.dp)){
-        Cookie(
-            onClick = {
-                cookies++
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        CookieCount(
-            cookies = cookies,
-        )
-    }
-}
-
-@Composable
-fun CookieCount(
-    cookies: Int,
-){
-    Row(){
-        Text(text = stringResource(id = R.string.cookies), fontSize = 50.sp)
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = cookies.toString(), fontWeight = FontWeight.Bold, fontSize = 50.sp)
-    }
-}
-
-@Composable
-fun Cookie(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-){
-    Button(onClick = onClick, modifier = modifier) {
-        Image(
-            painter = painterResource(id = R.drawable.cookie),
-            contentDescription = "cookie",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .height(200.dp)
-        )
-    }
-}
-
-@Composable
-fun MyText(
-    str: String,
-    modifier: Modifier = Modifier
-){
-    Text(
-        text = str,
-        style = MaterialTheme.typography.headlineSmall,
-        modifier = Modifier.padding(16.dp)
-    )
-}
-
-@Composable
-private fun MyItemButton(
-    expanded: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-){
-
-    IconButton(
-        onClick = onClick,
-        modifier = modifier
-    ){
-        Icon(
-            imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-            contentDescription = stringResource(id = R.string.expand),
-            tint = MaterialTheme.colorScheme.secondary
         )
     }
 }
