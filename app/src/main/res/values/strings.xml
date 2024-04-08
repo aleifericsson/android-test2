@@ -8,6 +8,7 @@
     <string name="string6">Carbon neutral coffee comes in a black cup.</string>
     <string name="expand">expand</string>
     <string name="cookies">Cookies:</string>
-    <string name="mathrulez">Solve the problem to get 10 free cookies!</string>
-    <string name="whatis">What is:</string>
+    <string name="math_rulez">Solve the problem to get 10 free cookies!</string>
+    <string name="what_is">What is:</string>
+    <string name="enter_answer">Enter answer here:</string>
 </resources>
