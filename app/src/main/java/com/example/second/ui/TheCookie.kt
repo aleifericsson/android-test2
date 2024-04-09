@@ -41,7 +41,7 @@ import com.example.second.R
 fun CookieClicker(
 ){
     var cookies by remember { mutableIntStateOf(0) }
-    var myRandom by remember { mutableIntStateOf(1)}
+    var myRandom by remember { mutableIntStateOf(0)}
     var specialNums = arrayOf<Int>(1)
     Box(){
         Column(modifier = Modifier.padding(10.dp)){
