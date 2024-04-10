@@ -2,7 +2,8 @@ package com.example.second.model
 
 class Question ()
 {
-    private val operator:Operator = when( (0 .. 14).random()){
+    //NEXT TIME USE LATEINIT INSTEAD OF WHATEVER THIS IS
+    val operator:Operator = when( (0 .. 14).random()){
         in 0 .. 4 -> Operator.PLUS
         5,6,7 -> Operator.MINUS
         in 8 .. 11 -> Operator.MULT

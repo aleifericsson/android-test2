@@ -34,12 +34,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.second.R
+import androidx.compose.runtime.collectAsState
 
 
 @Composable
 fun CookieClicker(
+    gameViewModel: GameViewModel = viewModel()
 ){
+
+    val gameUIState by gameViewModel.uiState.collectAsState()
     var cookies by remember { mutableIntStateOf(0) }
     var myRandom by remember { mutableIntStateOf(0)}
     var specialNums = arrayOf<Int>(1)
@@ -55,7 +60,7 @@ fun CookieClicker(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             CookieCount(
-                cookies = cookies,
+                cookies = gameUIState.cookies,
             )
         }
         if(myRandom == 1){
@@ -129,6 +134,7 @@ fun MathMinigame(
                     .height(100.dp)
             )
             Text(stringResource(R.string.math_rulez))
+            Text(stringResource(R.string.math_rulez2))
             Text(stringResource(R.string.what_is))
             TextField(
                 value = userInput,

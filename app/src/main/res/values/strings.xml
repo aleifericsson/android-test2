@@ -9,6 +9,7 @@
     <string name="expand">expand</string>
     <string name="cookies">Cookies:</string>
     <string name="math_rulez">Solve the problem to get 10 free cookies!</string>
+    <string name="math_rulez2">Wrong answer = -20 points</string>
     <string name="what_is">What is:</string>
     <string name="enter_answer">Enter answer here:</string>
 </resources>
