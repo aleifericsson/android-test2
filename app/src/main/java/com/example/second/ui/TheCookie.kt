@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -45,17 +47,12 @@ fun CookieClicker(
 ){
 
     val gameUIState by gameViewModel.uiState.collectAsState()
-    var cookies by remember { mutableIntStateOf(0) }
-    var myRandom by remember { mutableIntStateOf(0)}
     var specialNums = arrayOf<Int>(1)
     Box(){
         Column(modifier = Modifier.padding(10.dp)){
             Cookie(
                 onClick = {
-                    cookies++
-                    if (!specialNums.contains(myRandom)){
-                        myRandom = (0..10).random()
-                    }
+                    gameViewModel.addCookie()
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -63,11 +60,12 @@ fun CookieClicker(
                 cookies = gameUIState.cookies,
             )
         }
-        if(myRandom == 1){
+        if(gameUIState.currentRandom==1){
             MathMinigame(
+                userInput = gameViewModel.userIn,
+                onUserInput = { gameViewModel.updateUserGuess(it)},
                 onComplete = {
-                    cookies+=10
-                    myRandom = (0..10).random()
+                    gameViewModel.checkAnswer(gameViewModel.userIn)
                 },
                 modifier = Modifier
                     .padding(5.dp)
@@ -107,9 +105,10 @@ fun Cookie(
 @Composable
 fun MathMinigame(
     onComplete: () -> Unit,
-    modifier: Modifier = Modifier
+        userInput: String,
+        modifier: Modifier = Modifier,
+        onUserInput: (String) -> Unit
 ){
-    var userInput by remember { mutableStateOf( "0")}
     val gradientColors = listOf(Color.hsl(246F, .36F, .53F), Color.hsl(274F, 0.61F, 0.38F), Color.hsl(293F, 0.45F, 0.60F) /*...*/)
     val brush = remember {
         Brush.linearGradient(
@@ -138,13 +137,16 @@ fun MathMinigame(
             Text(stringResource(R.string.what_is))
             TextField(
                 value = userInput,
-                onValueChange = { userInput = it},
+                onValueChange = onUserInput,
                 modifier = modifier,
                 singleLine = true,
                 label = {Text(stringResource(id = R.string.enter_answer))},
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {onComplete}
                 ),
                 textStyle = TextStyle(fontSize = 20.sp, brush=brush)
             )
